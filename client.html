@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Chatbot
+    </title>
+</head>
+
+<body style="text-align:center;">
+
+    <h1 style="color:green;">
+        Welcome!
+    </h1>
+
+    <h4>
+         input text:
+    </h4>
+
+    <textarea id = "input_sequence" name = "sequence" rows = "6" cols = "40" style="border:solid 1px black;"></textarea>
+
+    <br>
+
+    <label id = "LBL">
+        Click the Button
+    </label>
+
+    <br>
+
+    <button onclick="getLabel()">
+        Click Here!
+    </button>
+
+    <script>
+        function getLabel() {
+            document.getElementById('LBL').innerHTML  = 'Wait for 60 seconds ...';
+            fetch("http://127.0.0.1:5000/receiver",
+        {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Accept': 'application/json'
+            },
+        // Strigify the payload into JSON:
+        body:JSON.stringify(document.getElementById("input_sequence").value)}).then(res=>{
+                if(res.ok){
+                    return res.json()
+                }else{
+                    alert("something is wrong")
+                }
+            }).then(jsonResponse=>{
+
+                document.getElementById('LBL').innerHTML  = 'Julia: ' + jsonResponse;
+                console.log(jsonResponse)
+            }
+            ).catch((err) => console.error(err));
+
+        }
+    </script>
+</body>
+
+</html>
